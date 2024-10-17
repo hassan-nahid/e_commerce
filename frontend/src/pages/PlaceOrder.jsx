@@ -83,6 +83,10 @@ const PlaceOrder = () => {
             }
           }
           break;
+        case "sslcommerz": {
+          toast.success("SSLCommerz payment coming soon 😊")
+        }
+          break;
 
         default:
           break;

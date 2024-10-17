@@ -37,6 +37,7 @@ const Navbar = () => {
                     <p>CONTACT</p>
                     <hr className="w-2/4 border-none h-[1.5px] bg-gray-700 hidden" />
                 </NavLink>
+                <Link to="https://forever-admin-plum.vercel.app" className="border-2 py-1 px-3 rounded-xl border-stone-700">Admin Panel</Link>
             </ul>
             <div className="flex items-center gap-6">
                 <img onClick={() => setShowSearch(true)} src={assets.search_icon} alt="Search Icon" className="w-5 cursor-pointer" />
@@ -69,6 +70,7 @@ const Navbar = () => {
                     <NavLink onClick={() => setVisible(false)} className={"py-2 pl-6 border"} to={"/collection"}>COLLECTION</NavLink>
                     <NavLink onClick={() => setVisible(false)} className={"py-2 pl-6 border"} to={"/about"}>ABOUT</NavLink>
                     <NavLink onClick={() => setVisible(false)} className={"py-2 pl-6 border"} to={"/contact"}>CONTACT</NavLink>
+                    <NavLink onClick={() => setVisible(false)} className={"py-2 pl-6 border"} to={"https://forever-admin-plum.vercel.app/"}>Admin Panel</NavLink>
                 </div>
             </div>
 
