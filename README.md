@@ -39,8 +39,4 @@ To run this project locally, follow these steps:
 - MongoDB
 - Git
 
-### Steps:
 
-1. Clone the repository:
-   ```bash
-   git clone https://github.com/hassan-nahid/e_commerce
