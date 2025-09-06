@@ -15,6 +15,13 @@ const ShopContextProvider = (props) => {
     const [products, setProducts] = useState([]);
     const [token, setToken] = useState("");
     const navigate = useNavigate();
+    const [pagination, setPagination] = useState({
+        page: 1,
+        totalPages: 1,
+        total: 0,
+        limit: 12,
+    });
+
 
     const addToCart = async (itemId, size) => {
 
@@ -75,10 +82,10 @@ const ShopContextProvider = (props) => {
 
         setCartItems(cartData)
 
-        if(token){
-            try{
-                await axios.post(backendUrl + "/api/cart/update", {itemId, size, quantity}, {headers: {token}})
-            }catch(error){
+        if (token) {
+            try {
+                await axios.post(backendUrl + "/api/cart/update", { itemId, size, quantity }, { headers: { token } })
+            } catch (error) {
                 console.log(error)
                 toast.error(error.message)
             }
@@ -102,28 +109,44 @@ const ShopContextProvider = (props) => {
         return totalAmount;
     }
 
-    const getProductData = async () => {
+    // const getProductData = async () => {
+    //     try {
+    //         const response = await axios.get(backendUrl + "/api/product/list")
+    //         if (response.data.success) {
+    //             setProducts(response.data.products)
+    //         } else {
+    //             toast.error(response.data.message)
+    //         }
+    //     }
+    //     catch (error) {
+    //         console.log(error);
+    //         toast.error(error.message)
+    //     }
+    // }
+
+    const getProductData = async (page = 1, limit = 12) => {
         try {
-            const response = await axios.get(backendUrl + "/api/product/list")
+            const response = await axios.get(`${backendUrl}/api/product/list?page=${page}&limit=${limit}`);
             if (response.data.success) {
-                setProducts(response.data.products)
-            } else {
-                toast.error(response.data.message)
+                setProducts(response.data.products);
+                setPagination(response.data.pagination);
             }
-        }
-        catch (error) {
+            else {
+                toast.error(response.data.message);
+            }
+        } catch (error) {
             console.log(error);
-            toast.error(error.message)
+            toast.error(error.message);
         }
-    }
+    };
 
     const getUserCart = async (token) => {
-        try{
-            const response = await axios.post(backendUrl + "/api/cart/get",{},{headers: {token}})
-            if(response.data.success){
+        try {
+            const response = await axios.post(backendUrl + "/api/cart/get", {}, { headers: { token } })
+            if (response.data.success) {
                 setCartItems(response.data.cartData)
             }
-        }catch(error){
+        } catch (error) {
             console.log(error)
             toast.error(error.message)
         }
@@ -146,7 +169,7 @@ const ShopContextProvider = (props) => {
         search, setSearch, showSearch, setShowSearch,
         cartItems, addToCart, getCartCount, updateQuantity,
         getCartAmount, navigate, backendUrl, setToken, token,
-        setCartItems
+        setCartItems,pagination, getProductData, setPagination
     }
 
     return (
