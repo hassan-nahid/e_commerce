@@ -47,19 +47,41 @@ const Login = () => {
 
   return (
     <form onSubmit={onSubmitHandler} className="flex flex-col items-center w-[90%] sm:max-w-96 m-auto mt-14 gap-4 text-gray-800">
+      {currentState === "Login" && (
+        <div className="w-full bg-blue-50 border border-blue-200 rounded-lg p-4 mb-4 flex flex-col items-center">
+          <div className="text-sm text-blue-900 text-center mb-2">
+            <span className="font-semibold">You can use your own credentials, or click a demo button to autofill both email and password for User.</span>
+          </div>
+          <div className="text-xs text-blue-700 text-center mb-2">
+            <span className="font-semibold">Note:</span> Demo button will set both fields automatically.
+          </div>
+          <button
+            type="button"
+            className="bg-blue-700 hover:bg-blue-800 transition-colors text-white font-semibold px-8 py-2 rounded-lg w-full mb-2"
+            onClick={() => {
+              setEmail("user@demo.com");
+              setPassword("demoPassword");
+            }}
+          >
+            Use Demo Credentials
+          </button>
+        </div>
+      )}
       <div className="inline-flex items-center gap-2 mb-2 mt-10">
         <p className="prata-regular text-3xl">{currentState}</p>
         <hr className="border-none h-[1.5px] w-8 bg-green-800" />
       </div>
-      {currentState === "Login" ? '' : <input type="text" onChange={(e) => setName(e.target.value)} value={name} className="w-full px-3 py-2 border border-gray-800" placeholder="Name" required />}
+      {currentState === "Login" ? null : (
+        <input type="text" onChange={(e) => setName(e.target.value)} value={name} className="w-full px-3 py-2 border border-gray-800" placeholder="Name" required />
+      )}
       <input onChange={(e) => setEmail(e.target.value)} value={email} type="email" className="w-full px-3 py-2 border border-gray-800" placeholder="Email" required />
       <input onChange={(e) => setPassword(e.target.value)} value={password} type="password" className="w-full px-3 py-2 border border-gray-800" placeholder="Password" required />
       <div className="w-full flex justify-between text-sm mt-[-8px]">
-        <p>Forgot Your Password?</p>
-        {
-          currentState === "Login"
-            ? <p onClick={() => setCurrentState("Sign Up")} className="cursor-pointer">Create account</p> : <p onClick={() => setCurrentState("Login")} className="cursor-pointer">Login Here</p>
-        }
+        {currentState === "Login" ? (
+          <p onClick={() => setCurrentState("Sign Up")} className="cursor-pointer">Don&apos;t Have Account? Create Account</p>
+        ) : (
+          <p onClick={() => setCurrentState("Login")} className="cursor-pointer">Login Here</p>
+        )}
       </div>
       <button className="bg-black text-white font-light px-8 py-2 mt-4">{currentState === "Login" ? "Sign In" : "Sign Up"}</button>
     </form>

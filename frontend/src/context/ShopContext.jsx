@@ -181,7 +181,7 @@ const ShopContextProvider = (props) => {
     // Change password
     const changePassword = async (oldPassword, newPassword) => {
         try {
-            const response = await axios.post(`${backendUrl}/api/user/change-password`, { oldPassword, newPassword }, { headers: { token } });
+            const response = await axios.patch(`${backendUrl}/api/user/change-password`, { oldPassword, newPassword }, { headers: { token } });
             return response.data;
         } catch (error) {
             console.log(error);

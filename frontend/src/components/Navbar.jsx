@@ -54,9 +54,10 @@ const Navbar = () => {
                     <Link to={"/login"}><img onClick={() => token ? null : navigate("/login")} src={assets.profile_icon} className="w-5 cursor-pointer" alt="Profile pic" /></Link>
                     {/* dropdown  */}
                     {token && <div className="group-hover:block hidden absolute dropdown-menu right-0 pt-4">
-                        <div className="flex flex-col gap-2 w-36 py-3 px-5 bg-slate-100 text-gray-500 rounded">
+                        <div className="flex flex-col gap-2 w-52 py-3 px-5 bg-slate-100 text-gray-500 rounded">
                             <Link to={"/profile"} className="cursor-pointer hover:text-black">My Profile</Link>
                             <p onClick={() => navigate("/orders")} className="cursor-pointer hover:text-black">Orders</p>
+                            <Link to={"/change-password"} className="cursor-pointer hover:text-black">Change Password</Link>
                             <p onClick={logout} className="cursor-pointer hover:text-black">Logout</p>
                         </div>
                     </div>}

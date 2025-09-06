@@ -19,6 +19,7 @@ import Verify from "./pages/Verify"
 import PrivacyPolicy from "./pages/PrivacyPolicy"
 import FAQ from "./pages/FAQ"
 import Profile from "./pages/Profile"
+import ChangePassword from "./pages/ChangePassword"
 
 const PrivateRoute = ({ children }) => {
   const { token } = useContext(ShopContext);
@@ -55,6 +56,11 @@ const App = () => {
         <Route path="/profile" element={
           <PrivateRoute>
             <Profile />
+          </PrivateRoute>
+        } />
+        <Route path="/change-password" element={
+          <PrivateRoute>
+            <ChangePassword />
           </PrivateRoute>
         } />
       </Routes>
