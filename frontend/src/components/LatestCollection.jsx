@@ -5,7 +5,7 @@ import ProductItem from "./ProductItem"
 
 const LatestCollection = () => {
 
-    const { products } = useContext(ShopContext)
+    const { products, loading } = useContext(ShopContext)
 
     const [latestProducts, setLatestProducts] = useState([])
 
@@ -24,11 +24,15 @@ const LatestCollection = () => {
             {/* Rendering Products */}
 
             <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 gap-4 gap-y-6">
-                {
+                {loading ? (
+                    Array.from({ length: 10 }).map((_, idx) => (
+                        <div key={idx} className="animate-pulse bg-gray-200 rounded-lg h-64 w-full" />
+                    ))
+                ) : (
                     latestProducts.map((item, index) => (
                         <ProductItem key={index} id={item._id} image={item.image} name={item.name} price={item.price} />
                     ))
-                }
+                )}
             </div>
         </div>
     )

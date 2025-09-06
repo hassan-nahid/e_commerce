@@ -89,7 +89,61 @@ const adminLogin = async (req, res) => {
     }
 }
 
-export { loginUser, registerUser, adminLogin }
+// Get current user info
+const getMe = async (req, res) => {
+    try {
+        const token = req.headers.token;
+        if (!token) {
+            return res.status(401).json({ success: false, message: "No token provided" });
+        }
+        const decoded = jwt.verify(token, process.env.JWT_SECRET);
+        const user = await userModel.findById(decoded.id).select("-password -cartData");
+        if (!user) {
+            return res.status(404).json({ success: false, message: "User not found" });
+        }
+        res.json({ success: true, user });
+    } catch (error) {
+        console.log(error);
+        res.status(401).json({ success: false, message: "Invalid token" });
+    }
+};
+
+const changePassword = async (req, res) => {
+    try {
+        const token = req.headers.token;
+        const { oldPassword, newPassword } = req.body;
+        if (!token) {
+            return res.status(401).json({ success: false, message: "No token provided" });
+        }
+        if (!oldPassword || !newPassword) {
+            return res.status(400).json({ success: false, message: "Old and new password required" });
+        }
+        if (newPassword.length < 8) {
+            return res.status(400).json({ success: false, message: "New password must be at least 8 characters" });
+        }
+        const decoded = jwt.verify(token, process.env.JWT_SECRET);
+        const user = await userModel.findById(decoded.id);
+        if (!user) {
+            return res.status(404).json({ success: false, message: "User not found" });
+        }
+        const isMatch = await bcrypt.compare(oldPassword, user.password);
+        if (!isMatch) {
+            return res.status(400).json({ success: false, message: "Old password is incorrect" });
+        }
+        const salt = await bcrypt.genSalt(10);
+        const hashedPassword = await bcrypt.hash(newPassword, salt);
+        user.password = hashedPassword;
+        await user.save();
+        res.json({ success: true, message: "Password changed successfully" });
+    } catch (error) {
+        console.log(error);
+        res.status(500).json({ success: false, message: error.message });
+    }
+};
+
+
+
+export { loginUser, registerUser, adminLogin , getMe, changePassword}
 
 
 

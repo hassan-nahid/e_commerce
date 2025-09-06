@@ -1,4 +1,6 @@
-import { Route, Routes } from "react-router-dom"
+import { Route, Routes, Navigate } from "react-router-dom"
+import { useContext } from "react"
+import { ShopContext } from "./context/ShopContext"
 import Home from "./pages/Home"
 import Collection from "./pages/Collection"
 import About from "./pages/About"
@@ -16,9 +18,14 @@ import 'react-toastify/dist/ReactToastify.css';
 import Verify from "./pages/Verify"
 import PrivacyPolicy from "./pages/PrivacyPolicy"
 import FAQ from "./pages/FAQ"
+import Profile from "./pages/Profile"
+
+const PrivateRoute = ({ children }) => {
+  const { token } = useContext(ShopContext);
+  return token ? children : <Navigate to="/login" replace />;
+};
 
 const App = () => {
-
   return (
     <div className="px-4 sm:px-[5vw] md:px-[7vw] lg:px-[9vw]">
       <ToastContainer />
@@ -32,11 +39,24 @@ const App = () => {
         <Route path="/product/:productId" element={<Product />} />
         <Route path="/cart" element={<Cart />} />
         <Route path="/login" element={<Login />} />
-        <Route path="/place-order" element={<PlaceOrder />} />
-        <Route path="/orders" element={<Orders />} />
+        <Route path="/place-order" element={
+          <PrivateRoute>
+            <PlaceOrder />
+          </PrivateRoute>
+        } />
+        <Route path="/orders" element={
+          <PrivateRoute>
+            <Orders />
+          </PrivateRoute>
+        } />
         <Route path="/verify" element={<Verify />} />
         <Route path="/privacy-policy" element={<PrivacyPolicy />} />
         <Route path="/faq" element={<FAQ />} />
+        <Route path="/profile" element={
+          <PrivateRoute>
+            <Profile />
+          </PrivateRoute>
+        } />
       </Routes>
       <Footer />
     </div>

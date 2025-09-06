@@ -21,6 +21,7 @@ const ShopContextProvider = (props) => {
         total: 0,
         limit: 12,
     });
+    const [loading, setLoading] = useState(false);
 
 
     const addToCart = async (itemId, size) => {
@@ -125,6 +126,7 @@ const ShopContextProvider = (props) => {
     // }
 
     const getProductData = async (page = 1, limit = 12) => {
+        setLoading(true);
         try {
             const response = await axios.get(`${backendUrl}/api/product/list?page=${page}&limit=${limit}`);
             if (response.data.success) {
@@ -138,6 +140,7 @@ const ShopContextProvider = (props) => {
             console.log(error);
             toast.error(error.message);
         }
+        setLoading(false);
     };
 
     const getUserCart = async (token) => {
@@ -164,12 +167,35 @@ const ShopContextProvider = (props) => {
         }
     }, [])
 
+    // Get current user info
+    const getMe = async () => {
+        try {
+            const response = await axios.get(`${backendUrl}/api/user/get-me`, { headers: { token } });
+            return response.data;
+        } catch (error) {
+            console.log(error);
+            return { success: false, message: error.message };
+        }
+    };
+
+    // Change password
+    const changePassword = async (oldPassword, newPassword) => {
+        try {
+            const response = await axios.post(`${backendUrl}/api/user/change-password`, { oldPassword, newPassword }, { headers: { token } });
+            return response.data;
+        } catch (error) {
+            console.log(error);
+            return { success: false, message: error.message };
+        }
+    };
+
     const value = {
         products, currency, delivery_fee,
         search, setSearch, showSearch, setShowSearch,
         cartItems, addToCart, getCartCount, updateQuantity,
         getCartAmount, navigate, backendUrl, setToken, token,
-        setCartItems,pagination, getProductData, setPagination
+        setCartItems, pagination, getProductData, setPagination, loading,
+        getMe, changePassword
     }
 
     return (

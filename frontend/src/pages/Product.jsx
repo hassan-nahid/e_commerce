@@ -5,7 +5,7 @@ import { assets } from "../assets/assets";
 import RelatedProducts from "./RelatedProducts";
 const Product = () => {
   const { productId } = useParams();
-  const { products, currency, addToCart } = useContext(ShopContext)
+  const { products, currency, addToCart, loading } = useContext(ShopContext)
   const [productData, setProductData] = useState(false);
   const [image, setImage] = useState("");
   const [size, setSize] = useState('')
@@ -26,11 +26,54 @@ const Product = () => {
     fetchProductData();
   }, [productId, products])
 
-  return productData ? (
+  if (loading || !productData) {
+    return (
+      <div className="border-t-2 pt-10">
+        <div className="flex gap-12 sm:gap-12 flex-col sm:flex-row">
+          <div className="flex-1 flex flex-col-reverse gap-3 sm:flex-row">
+            <div className="flex sm:flex-col justify-between sm:w-[18.7%] w-full">
+              {Array.from({ length: 4 }).map((_, idx) => (
+                <div key={idx} className="animate-pulse bg-gray-200 rounded-lg h-20 w-full sm:mb-3" />
+              ))}
+            </div>
+            <div className="w-full sm:w-[80%]">
+              <div className="animate-pulse bg-gray-200 rounded-lg h-80 w-full" />
+            </div>
+          </div>
+          <div className="flex-1">
+            <div className="animate-pulse bg-gray-200 h-8 w-1/2 mb-4 rounded" />
+            <div className="animate-pulse bg-gray-200 h-6 w-1/3 mb-2 rounded" />
+            <div className="animate-pulse bg-gray-200 h-10 w-1/4 mb-4 rounded" />
+            <div className="animate-pulse bg-gray-200 h-20 w-full mb-4 rounded" />
+            <div className="flex gap-2 mb-4">
+              {Array.from({ length: 4 }).map((_, idx) => (
+                <div key={idx} className="animate-pulse bg-gray-200 h-10 w-16 rounded" />
+              ))}
+            </div>
+            <div className="animate-pulse bg-gray-200 h-10 w-1/2 mb-4 rounded" />
+            <div className="animate-pulse bg-gray-200 h-6 w-3/4 mb-2 rounded" />
+            <div className="animate-pulse bg-gray-200 h-6 w-2/3 mb-2 rounded" />
+          </div>
+        </div>
+        <div className="mt-20">
+          <div className="flex">
+            <div className="animate-pulse bg-gray-200 h-8 w-32 mr-2 rounded" />
+            <div className="animate-pulse bg-gray-200 h-8 w-32 rounded" />
+          </div>
+          <div className="flex flex-col gap-4 border px-6 py-6">
+            {Array.from({ length: 2 }).map((_, idx) => (
+              <div key={idx} className="animate-pulse bg-gray-200 h-6 w-full rounded" />
+            ))}
+          </div>
+        </div>
+      </div>
+    );
+  }
+
+  return (
     <div className="border-t-2 pt-10 transition-opacity ease-in duration-500 opacity-100">
       {/* product data */}
       <div className="flex gap-12 sm:gap-12 flex-col sm:flex-row">
-
         {/* Product image */}
         <div className="flex-1 flex flex-col-reverse gap-3 sm:flex-row">
           <div className="flex sm:flex-col overflow-x-auto sm:overflow-y-scroll justify-between sm:justify-normal sm:w-[18.7%] w-full">
@@ -89,7 +132,7 @@ const Product = () => {
 
         <RelatedProducts category={productData.category} subCategory={productData.subCategory}/>
     </div>
-  ) : <div className="opacity-0"> </div>
+  );
 }
 
 export default Product

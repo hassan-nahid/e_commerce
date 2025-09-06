@@ -6,7 +6,7 @@ import ProductItem from "../components/ProductItem";
 
 const Collection = () => {
 
-  const { products, search, showSearch, pagination, getProductData } = useContext(ShopContext)
+  const { products, search, showSearch,loading, pagination, getProductData } = useContext(ShopContext)
   const [showFilter, setShowFilter] = useState(false);
   const [filterProduct, setFilterProduct] = useState([]);
   const [category, setCategory] = useState([])
@@ -139,11 +139,17 @@ const Collection = () => {
 
           {/* map product */}
           <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4 gap-y-6">
-            {
+            {loading ? (
+              Array.from({ length: 8 }).map((_, idx) => (
+                <div key={idx} className="animate-pulse bg-gray-200 rounded-lg h-64 w-full" />
+              ))
+            ) : filterProduct.length === 0 ? (
+              <div className="col-span-4 text-center py-10">No products found.</div>
+            ) : (
               filterProduct.map((item, index) => (
                 <ProductItem key={index} name={item.name} id={item._id} price={item.price} image={item.image} />
               ))
-            }
+            )}
           </div>
         </div>
 
