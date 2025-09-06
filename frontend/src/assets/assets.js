@@ -20,6 +20,14 @@ import razorpay_logo from './razorpay_logo.png'
 import stripe_logo from './stripe_logo.png'
 import cross_icon from './cross_icon.png'
 import sslcommerz_logo from './sslcommerz_logo.png'
+import track from "./track.png"
+import cartIcon from "./cartIcon.png"
+import addToCart from "./addToCart.png"
+import gucci from "./gucci.png"
+import levis from "./levis.png"
+import nike from "./nike.png"
+import zara from "./zara.png"
+import adidas from "./adidas.png"
 
 export const assets = {
     logo,
@@ -41,5 +49,13 @@ export const assets = {
     stripe_logo,
     cross_icon,
     sslcommerz_logo,
+    track,
+    cartIcon,
+    addToCart,
+    gucci,
+    adidas,
+    nike,
+    levis,
+    zara
 }
 
