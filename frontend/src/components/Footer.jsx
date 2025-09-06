@@ -8,7 +8,7 @@ const Footer = () => {
                 <div>
                     <img src={assets.logo} alt="logo" className="mb-5 w-32" />
                     <p className="w-full md:w-2/3 text-gray-600">
-                        Lorem, ipsum dolor sit amet consectetur adipisicing elit. Odio nihil eius delectus nobis, sequi inventore iste consequatur ratione cum. Atque perferendis libero nihil ipsam nulla maiores eveniet ad alias omnis.
+                        Your one-stop online store for quality products at the best prices. Shop with confidence and enjoy secure payments, fast delivery, and excellent customer support.
                     </p>
                 </div>
                 <div>
@@ -30,7 +30,7 @@ const Footer = () => {
             </div>
             <div className="w-full">
                 <hr />
-                <p className="py-5 text-sm text-center">Copyright 2024@ forever.com - All RIght Reserved</p>
+                <p className="py-5 text-sm text-center">Copyright 2025@ forever.com - All RIght Reserved</p>
             </div>
 
         </div>

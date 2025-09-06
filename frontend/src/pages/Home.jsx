@@ -1,4 +1,5 @@
 import BestSeller from "../components/BestSeller";
+import CustomerTestimonials from "../components/CustomerTestimonials";
 import Hero from "../components/Hero";
 import LatestCollection from "../components/LatestCollection";
 import NewsletterBox from "../components/NewsletterBox";
@@ -10,6 +11,7 @@ const Home = () => {
             <Hero/>
             <LatestCollection/>
             <BestSeller/>
+            <CustomerTestimonials/>
             <OurPolicy/>
             <NewsletterBox/>
         </div>
