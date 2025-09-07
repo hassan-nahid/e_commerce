@@ -20,6 +20,7 @@ import PrivacyPolicy from "./pages/PrivacyPolicy"
 import FAQ from "./pages/FAQ"
 import Profile from "./pages/Profile"
 import ChangePassword from "./pages/ChangePassword"
+import MyTransaction from "./pages/MyTransaction"
 
 const PrivateRoute = ({ children }) => {
   const { token } = useContext(ShopContext);
@@ -61,6 +62,11 @@ const App = () => {
         <Route path="/change-password" element={
           <PrivateRoute>
             <ChangePassword />
+          </PrivateRoute>
+        } />
+        <Route path="/my-transaction" element={
+          <PrivateRoute>
+            <MyTransaction />
           </PrivateRoute>
         } />
       </Routes>

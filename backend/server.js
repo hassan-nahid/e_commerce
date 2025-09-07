@@ -7,6 +7,7 @@ import userRouter from "./routes/userRoute.js"
 import productRouter from "./routes/productRoute.js"
 import cartRouter from "./routes/cartRoute.js"
 import orderRouter from "./routes/orderRoute.js"
+import transactionRouter from "./routes/transactionRoute.js"
 
 
 
@@ -29,6 +30,7 @@ app.use("/api/user",userRouter)
 app.use("/api/product",productRouter)
 app.use("/api/cart",cartRouter)
 app.use("/api/order",orderRouter)
+app.use("/api/transaction", transactionRouter)
 
 
 // api endpoints

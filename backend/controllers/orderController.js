@@ -1,5 +1,6 @@
 import orderModel from "../models/orderModel.js";
 import userModel from "../models/userModel.js";
+import Transaction from '../models/transactionModel.js';
 import Stripe from "stripe"; // Correcting import for Stripe
 
 // global variables
@@ -22,11 +23,14 @@ const placeOrder = async (req, res) => {
             payment: false,
             date: Date.now(),
         };
-        const newOrder = new orderModel(orderData);
-        await newOrder.save();
+    const newOrder = new orderModel(orderData);
+    await newOrder.save();
 
-        await userModel.findByIdAndUpdate(userId, { cardData: {} });
-        res.json({ success: true, message: "Order Placed " });
+    await userModel.findByIdAndUpdate(userId, { cardData: {} });
+
+    // If COD and status is Delivered, create transaction
+    // (COD transaction creation should be triggered when status is updated to Delivered)
+    res.json({ success: true, message: "Order Placed ", orderId: newOrder._id });
 
     } catch (error) {
         console.log(error);
@@ -73,13 +77,25 @@ const placeOrderStripe = async (req, res) => {
             quantity: 1
         });
 
-        const session = await stripe.checkout.sessions.create({
-            success_url: `${origin}/verify/?success=true&orderId=${newOrder._id}`,
-            cancel_url: `${origin}/verify/?success=false&orderId=${newOrder._id}`,
-            line_items,
-            mode: "payment",
-        });
-        res.json({ success: true, session_url: session.url });
+                const session = await stripe.checkout.sessions.create({
+                        success_url: `${origin}/verify/?success=true&orderId=${newOrder._id}`,
+                        cancel_url: `${origin}/verify/?success=false&orderId=${newOrder._id}`,
+                        line_items,
+                        mode: "payment",
+                });
+
+                // Create transaction for Stripe
+                const transaction = new Transaction({
+                    transactionId: session.id,
+                    transactionType: 'stripe',
+                    userId,
+                    orderId: newOrder._id,
+                    status: 'completed',
+                    amount: newOrder.amount,
+                });
+                await transaction.save();
+
+                res.json({ success: true, session_url: session.url });
 
     } catch (error) {
         console.log(error);
@@ -140,8 +156,22 @@ const userOrders = async (req, res) => {
 const updateStatus = async (req, res) => {
     try {
         const { orderId, status } = req.body;
-        await orderModel.findByIdAndUpdate(orderId, { status });
-        res.json({ success: true, message: "Status Updated" });
+                await orderModel.findByIdAndUpdate(orderId, { status });
+
+                // If status is Delivered and paymentMethod is COD, create transaction
+                const order = await orderModel.findById(orderId);
+                if (order && order.paymentMethod === 'COD' && status === 'Delivered') {
+                    const transaction = new Transaction({
+                        transactionId: `COD-${orderId}`,
+                        transactionType: 'cash_on_delivery',
+                        userId: order.userId,
+                        orderId: orderId,
+                        status: 'completed',
+                        amount: order.amount
+                    });
+                    await transaction.save();
+                }
+                res.json({ success: true, message: "Status Updated" });
     } catch (error) {
         console.log(error);
         res.json({ success: false, message: error.message });
