@@ -179,7 +179,7 @@ const Overview = ({token}) => {
                         <h3 className="text-lg font-semibold mb-2">Top Orders per Product</h3>
                         <Bar data={barData} />
                     </div>
-                    <div className="bg-white border p-4">
+                    <div className="bg-white border p-4 md:p-24 lg:p-32">
                         <h3 className="text-lg font-semibold mb-2">Payment Method Split</h3>
                         <Pie data={pieData} />
                     </div>
@@ -190,7 +190,7 @@ const Overview = ({token}) => {
                 </div>
 
                 {/* Table */}
-                <div className="bg-white  border p-4">
+                <div className="bg-white  border p-4 overflow-x-auto">
                     <h3 className="text-lg font-semibold mb-2">Recent Transactions</h3>
                     <table className="w-full text-sm">
                         <thead>

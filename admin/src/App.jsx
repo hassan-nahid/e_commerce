@@ -34,12 +34,12 @@ const App = () => {
             <Sidebar />
             <div className="w-[70%] mx-auto ml-[max(5vw,25px)] my-8 text-gray-600 text-base">
               <Routes>
+                <Route path="/overview" element={<Overview token={token} index={true}/>} />
                 <Route path="/add" element={<Add token={token}/>} />
                 <Route path="/list" element={<List token={token}/>} />
                 <Route path="/orders" element={<Order token={token}/>} />
                 <Route path="/update/:id" element={<Update token={token}/>} />
                 <Route path="/all-user" element={<AllUser token={token}/>} />
-                <Route path="/overview" element={<Overview token={token} index={true}/>} />
               </Routes>
             </div>
           </div>
