@@ -141,6 +141,30 @@ const changePassword = async (req, res) => {
     }
 };
 
+// Get all users (admin only)
+export const getAllUser = async (req, res) => {
+    try {
+        const users = await userModel.find({}, '-password'); // Exclude password field
+        res.status(200).json({ success: true, users });
+    } catch (error) {
+        res.status(500).json({ success: false, message: error.message });
+    }
+};
+
+// Delete user by ID (admin only)
+export const deleteUserById = async (req, res) => {
+    try {
+        const { id } = req.params;
+        const deletedUser = await userModel.findByIdAndDelete(id);
+        if (!deletedUser) {
+            return res.status(404).json({ success: false, message: 'User not found' });
+        }
+        res.status(200).json({ success: true, message: 'User deleted', user: deletedUser });
+    } catch (error) {
+        res.status(500).json({ success: false, message: error.message });
+    }
+};
+
 
 
 export { loginUser, registerUser, adminLogin , getMe, changePassword}

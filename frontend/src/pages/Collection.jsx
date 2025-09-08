@@ -6,9 +6,11 @@ import ProductItem from "../components/ProductItem";
 
 const Collection = () => {
 
-  const { products, search, showSearch,loading, pagination, getProductData } = useContext(ShopContext)
+  const { products, search, showSearch,loading } = useContext(ShopContext)
   const [showFilter, setShowFilter] = useState(false);
   const [filterProduct, setFilterProduct] = useState([]);
+  const [currentPage, setCurrentPage] = useState(1);
+  const productsPerPage = 12;
   const [category, setCategory] = useState([])
   const [subCategory, setSubCategory] = useState([])
   const [sortType, setSortType] = useState("relevant")
@@ -70,16 +72,25 @@ const Collection = () => {
   }
 
   useEffect(() => {
-    applyFIlter()
+    applyFIlter();
+    setCurrentPage(1); // Reset to first page on filter change
   }, [category, subCategory, search, showSearch, products])
 
   useEffect(() => {
-    sortProduct()
+    sortProduct();
+    setCurrentPage(1); // Reset to first page on sort change
   }, [sortType])
 
+  // Pagination logic for filtered products
+  const totalPages = Math.ceil(filterProduct.length / productsPerPage);
+  const paginatedProducts = filterProduct.slice(
+    (currentPage - 1) * productsPerPage,
+    currentPage * productsPerPage
+  );
+
   const handlePageChange = (newPage) => {
-    if (newPage >= 1 && newPage <= pagination.totalPages) {
-      getProductData(newPage, pagination.limit);
+    if (newPage >= 1 && newPage <= totalPages) {
+      setCurrentPage(newPage);
     }
   };
 
@@ -137,16 +148,16 @@ const Collection = () => {
             </select>
           </div>
 
-          {/* map product */}
+          {/* map product with pagination */}
           <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4 gap-y-6">
             {loading ? (
               Array.from({ length: 8 }).map((_, idx) => (
                 <div key={idx} className="animate-pulse bg-gray-200 rounded-lg h-64 w-full" />
               ))
-            ) : filterProduct.length === 0 ? (
+            ) : paginatedProducts.length === 0 ? (
               <div className="col-span-4 text-center py-10">No products found.</div>
             ) : (
-              filterProduct.map((item, index) => (
+              paginatedProducts.map((item, index) => (
                 <ProductItem key={index} name={item.name} id={item._id} price={item.price} image={item.image} />
               ))
             )}
@@ -156,19 +167,19 @@ const Collection = () => {
       </div>
       <div className="flex justify-center mt-6 gap-2">
         <button
-          disabled={pagination.page === 1}
-          onClick={() => handlePageChange(pagination.page - 1)}
-          className={`px-3 py-1 border rounded${pagination.page === 1 ? " disabled:opacity-50" : ""}`}
+          disabled={currentPage === 1}
+          onClick={() => handlePageChange(currentPage - 1)}
+          className={`px-3 py-1 border rounded${currentPage === 1 ? " disabled:opacity-50" : ""}`}
         >
           Prev
         </button>
 
-        <span className="px-3 py-1">{pagination.page} / {pagination.totalPages}</span>
+        <span className="px-3 py-1">{currentPage} / {totalPages}</span>
 
         <button
-          disabled={pagination.page === pagination.totalPages}
-          onClick={() => handlePageChange(pagination.page + 1)}
-          className={`px-3 py-1 border rounded${pagination.page === pagination.totalPages ? " disabled:opacity-50" : ""}`}
+          disabled={currentPage === totalPages}
+          onClick={() => handlePageChange(currentPage + 1)}
+          className={`px-3 py-1 border rounded${currentPage === totalPages ? " disabled:opacity-50" : ""}`}
         >
           Next
         </button>

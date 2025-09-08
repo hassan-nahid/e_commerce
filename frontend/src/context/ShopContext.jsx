@@ -125,10 +125,10 @@ const ShopContextProvider = (props) => {
     //     }
     // }
 
-    const getProductData = async (page = 1, limit = 12) => {
+    const getProductData = async ( limit = 1200000) => {
         setLoading(true);
         try {
-            const response = await axios.get(`${backendUrl}/api/product/list?page=${page}&limit=${limit}`);
+            const response = await axios.get(`${backendUrl}/api/product/list?limit=${limit}`);
             if (response.data.success) {
                 setProducts(response.data.products);
                 setPagination(response.data.pagination);
