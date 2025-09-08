@@ -12,6 +12,7 @@ import 'react-toastify/dist/ReactToastify.css';
 import Update from "./pages/Update"
 import AllUser from "./pages/AllUser"
 import Overview from "./pages/Overview"
+import Transaction from "./pages/Transaction"
 
 export const backendUrl = import.meta.env.VITE_BACKEND_URL;
 export const currency = "$";
@@ -40,6 +41,7 @@ const App = () => {
                 <Route path="/orders" element={<Order token={token}/>} />
                 <Route path="/update/:id" element={<Update token={token}/>} />
                 <Route path="/all-user" element={<AllUser token={token}/>} />
+                <Route path="/all-transactions" element={<Transaction token={token}/>} />
               </Routes>
             </div>
           </div>

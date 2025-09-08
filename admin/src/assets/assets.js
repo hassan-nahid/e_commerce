@@ -6,6 +6,7 @@ import parcel_icon from './parcel_icon.svg'
 import all_user from "./allUser.png"
 import all_product from "./allProduct.png"
 import overview from "./overview.png"
+import transaction from "./transaction.png"
 
 export const assets = {
     logo,
@@ -15,6 +16,7 @@ export const assets = {
     parcel_icon,
     all_product,
     all_user,
-    overview
+    overview,
+    transaction
 }
 
